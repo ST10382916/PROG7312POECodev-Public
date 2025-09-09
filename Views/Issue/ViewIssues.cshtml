@@ -1,0 +1,404 @@
+@model MunicipalServicesMVP.Models.IssueReport[]
+@{
+    ViewData["Title"] = ViewBag.Title ?? "All Reported Issues";
+    var totalCount = ViewBag.TotalCount ?? 0;
+}
+
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h2 class="text-primary mb-1">
+                        <i class="fas fa-list-alt me-2"></i>All Reported Issues
+                    </h2>
+                    <p class="text-muted mb-0">
+                        Total Issues: <strong>@totalCount</strong> | 
+                        <span class="text-success">@(Model?.Count(i => i.CurrentStatus == MunicipalServicesMVP.Models.IssueStatusType.Resolved) ?? 0) Resolved</span> | 
+                        <span class="text-warning">@(Model?.Count(i => i.CurrentStatus == MunicipalServicesMVP.Models.IssueStatusType.Submitted) ?? 0) Pending</span>
+                    </p>
+                </div>
+                <div>
+                    <a href="@Url.Action("ReportIssue", "Issue")" class="btn btn-primary me-2">
+                        <i class="fas fa-plus-circle me-2"></i>Report New Issue
+                    </a>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>Main Menu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-filter me-2"></i>Filter Issues
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select id="statusFilter" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Submitted">Submitted</option>
+                                <option value="Under Review">Under Review</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="priorityFilter" class="form-select">
+                                <option value="">All Priorities</option>
+                                <option value="1">Low Priority</option>
+                                <option value="2">Medium Priority</option>
+                                <option value="3">High Priority</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="searchBox" class="form-control" placeholder="Search description or location...">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                                <i class="fas fa-times me-1"></i>Clear Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issues List -->
+    <div class="row">
+        <div class="col-12">
+            @if (Model != null && Model.Length > 0)
+            {
+                <div id="issuesContainer">
+                    @foreach (var issue in Model.OrderByDescending(i => i.SubmittedAt))
+                    {
+                        <div class="card mb-3 issue-card" 
+                             data-status="@issue.GetStatusText()" 
+                             data-priority="@issue.Priority"
+                             data-search="@(issue.Description.ToLower() + " " + issue.Location.ToString().ToLower())">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <h5 class="mb-0 me-3">
+                                        <i class="fas fa-hashtag me-1"></i>@issue.IssueId.ToString("D6")
+                                    </h5>
+                                    <span class="badge @GetStatusBadgeClass(issue.CurrentStatus) me-2">
+                                        @issue.GetStatusText()
+                                    </span>
+                                    <span class="badge @GetPriorityBadgeClass(issue.Priority)">
+                                        @issue.GetPriorityText() Priority
+                                    </span>
+                                </div>
+                                <div class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>@issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6 class="text-primary mb-2">
+                                            <i class="fas fa-tag me-1"></i>@(issue.Category?.Name ?? "Unknown Category")
+                                        </h6>
+                                        <p class="card-text mb-2">
+                                            @if (issue.Description.Length > 200)
+                                            {
+                                                @issue.Description.Substring(0, 200)<text>...</text>
+                                            }
+                                            else
+                                            {
+                                                @issue.Description
+                                            }
+                                        </p>
+                                        <div class="text-muted mb-2">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <strong>Location:</strong> @issue.Location.ToString()
+                                        </div>
+                                        <div class="text-muted">
+                                            <i class="fas fa-user me-1"></i>
+                                            <strong>Reporter:</strong> @issue.ReporterName
+                                            @if (!string.IsNullOrEmpty(issue.ReporterEmail))
+                                            {
+                                                <text> | </text><a href="mailto:@issue.ReporterEmail">@issue.ReporterEmail</a>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="issue-stats">
+                                            <div class="stat-item mb-2">
+                                                <i class="fas fa-paperclip me-1"></i>
+                                                <strong>Attachments:</strong> @issue.Attachments.Count files
+                                            </div>
+                                            @if (issue.LastUpdated.HasValue)
+                                            {
+                                                <div class="stat-item mb-2">
+                                                    <i class="fas fa-edit me-1"></i>
+                                                    <strong>Last Updated:</strong> @issue.LastUpdated.Value.ToString("dd MMM yyyy")
+                                                </div>
+                                            }
+                                            @if (!string.IsNullOrEmpty(issue.AdminNotes))
+                                            {
+                                                <div class="stat-item">
+                                                    <i class="fas fa-sticky-note me-1"></i>
+                                                    <strong>Admin Notes:</strong> 
+                                                    <small class="d-block text-muted">@issue.AdminNotes</small>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="mt-3 pt-3 border-top">
+                                    <a href="@Url.Action("IssueDetails", "Issue", new { id = issue.IssueId })" 
+                                       class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </a>
+                                    
+                                    @if (issue.Attachments.Count > 0)
+                                    {
+                                        <button class="btn btn-outline-info btn-sm me-2" 
+                                                onclick="showAttachments(@issue.IssueId)">
+                                            <i class="fas fa-paperclip me-1"></i>View Attachments (@issue.Attachments.Count)
+                                        </button>
+                                    }
+                                    
+                                    <button class="btn btn-outline-secondary btn-sm" 
+                                            onclick="copyReferenceNumber('@issue.IssueId.ToString("D6")')">
+                                        <i class="fas fa-copy me-1"></i>Copy Ref#
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <!-- No Results Message (Hidden by default) -->
+                <div id="noResults" class="text-center py-5" style="display: none;">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No Issues Found</h4>
+                    <p class="text-muted">Try adjusting your filters or search terms.</p>
+                </div>
+            }
+            else
+            {
+                <!-- Empty State -->
+                <div class="text-center py-5">
+                    <i class="fas fa-inbox fa-4x text-muted mb-4"></i>
+                    <h3 class="text-muted mb-3">No Issues Reported Yet</h3>
+                    <p class="text-muted mb-4">Be the first to report an issue and help improve our community!</p>
+                    <a href="@Url.Action("ReportIssue", "Issue")" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus-circle me-2"></i>Report Your First Issue
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Statistics Summary -->
+    @if (Model != null && Model.Length > 0)
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4">
+                            <i class="fas fa-chart-bar me-2"></i>Issues Summary
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="stat-box">
+                                    <h3 class="text-primary">@totalCount</h3>
+                                    <p class="text-muted mb-0">Total Issues</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-box">
+                                    <h3 class="text-success">@(Model.Count(i => i.CurrentStatus == MunicipalServicesMVP.Models.IssueStatusType.Resolved))</h3>
+                                    <p class="text-muted mb-0">Resolved</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-box">
+                                    <h3 class="text-warning">@(Model.Count(i => i.CurrentStatus == MunicipalServicesMVP.Models.IssueStatusType.Submitted))</h3>
+                                    <p class="text-muted mb-0">Pending</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-box">
+                                    <h3 class="text-info">@(Model.Count(i => i.Priority == 3))</h3>
+                                    <p class="text-muted mb-0">High Priority</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Filter functionality
+            $('#statusFilter, #priorityFilter').on('change', filterIssues);
+            $('#searchBox').on('input', debounce(filterIssues, 300));
+        });
+        
+        function filterIssues() {
+            var statusFilter = $('#statusFilter').val();
+            var priorityFilter = $('#priorityFilter').val();
+            var searchTerm = $('#searchBox').val().toLowerCase();
+            
+            var visibleCount = 0;
+            
+            $('.issue-card').each(function() {
+                var card = $(this);
+                var status = card.data('status');
+                var priority = card.data('priority').toString();
+                var searchData = card.data('search');
+                
+                var showCard = true;
+                
+                // Status filter
+                if (statusFilter && status !== statusFilter) {
+                    showCard = false;
+                }
+                
+                // Priority filter
+                if (priorityFilter && priority !== priorityFilter) {
+                    showCard = false;
+                }
+                
+                // Search filter
+                if (searchTerm && !searchData.includes(searchTerm)) {
+                    showCard = false;
+                }
+                
+                if (showCard) {
+                    card.show();
+                    visibleCount++;
+                } else {
+                    card.hide();
+                }
+            });
+            
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                $('#noResults').show();
+            } else {
+                $('#noResults').hide();
+            }
+        }
+        
+        function clearFilters() {
+            $('#statusFilter, #priorityFilter').val('');
+            $('#searchBox').val('');
+            $('.issue-card').show();
+            $('#noResults').hide();
+        }
+        
+        function showAttachments(issueId) {
+            // This would typically show a modal with attachment details
+            alert('Attachment viewer for Issue #' + issueId.toString().padStart(6, '0') + ' would open here.');
+        }
+        
+        function copyReferenceNumber(refNumber) {
+            navigator.clipboard.writeText('#' + refNumber).then(function() {
+                showTooltip('Reference number copied to clipboard!');
+            });
+        }
+        
+        function showTooltip(message) {
+            var tooltip = $('<div class="alert alert-success position-fixed" style="top: 20px; right: 20px; z-index: 9999;">' + message + '</div>');
+            $('body').append(tooltip);
+            setTimeout(function() {
+                tooltip.fadeOut(function() {
+                    tooltip.remove();
+                });
+            }, 3000);
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .issue-card {
+            transition: box-shadow 0.2s;
+        }
+        
+        .issue-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-box {
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            margin: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            font-size: 0.8em;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .issue-stats {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+}
+
+@functions {
+    string GetStatusBadgeClass(MunicipalServicesMVP.Models.IssueStatusType status)
+    {
+        return status switch
+        {
+            MunicipalServicesMVP.Models.IssueStatusType.Submitted => "bg-warning text-dark",
+            MunicipalServicesMVP.Models.IssueStatusType.UnderReview => "bg-info",
+            MunicipalServicesMVP.Models.IssueStatusType.Resolved => "bg-success",
+            MunicipalServicesMVP.Models.IssueStatusType.Rejected => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+    
+    string GetPriorityBadgeClass(int priority)
+    {
+        return priority switch
+        {
+            1 => "bg-secondary",
+            2 => "bg-warning text-dark",
+            3 => "bg-danger",
+            _ => "bg-light text-dark"
+        };
+    }
+}

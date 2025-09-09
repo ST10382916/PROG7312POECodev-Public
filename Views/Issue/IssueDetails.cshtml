@@ -1,0 +1,499 @@
+@model MunicipalServicesMVP.Models.IssueReport
+@{
+    ViewData["Title"] = ViewBag.Title ?? $"Issue Details - #{Model?.IssueId.ToString("D6")}";
+}
+
+<div class="container">
+    @if (Model != null)
+    {
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2 class="text-primary mb-1">
+                            <i class="fas fa-file-alt me-2"></i>Issue Details
+                        </h2>
+                        <p class="text-muted mb-0">Reference: <strong>#@Model.IssueId.ToString("D6")</strong></p>
+                    </div>
+                    <div>
+                        <a href="@Url.Action("ViewIssues", "Issue")" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-list me-2"></i>All Issues
+                        </a>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i>Main Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Main Details Column -->
+            <div class="col-lg-8">
+                <!-- Status and Priority Card -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Issue Status
+                        </h5>
+                        <div>
+                            <span class="badge @GetStatusBadgeClass(Model.CurrentStatus) me-2 fs-6">
+                                @Model.GetStatusText()
+                            </span>
+                            <span class="badge @GetPriorityBadgeClass(Model.Priority) fs-6">
+                                @Model.GetPriorityText() Priority
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-2">Category</h6>
+                                <p class="mb-3">
+                                    <i class="fas fa-tag me-2"></i>@(Model.Category?.Name ?? "Unknown Category")
+                                    @if (!string.IsNullOrEmpty(Model.Category?.Description))
+                                    {
+                                        <br><small class="text-muted">@Model.Category.Description</small>
+                                    }
+                                </p>
+                                
+                                <h6 class="text-primary mb-2">Submitted</h6>
+                                <p class="mb-3">
+                                    <i class="fas fa-calendar me-2"></i>@Model.SubmittedAt.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                @if (Model.LastUpdated.HasValue)
+                                {
+                                    <h6 class="text-primary mb-2">Last Updated</h6>
+                                    <p class="mb-3">
+                                        <i class="fas fa-edit me-2"></i>@Model.LastUpdated.Value.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
+                                    </p>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(Model.Category?.ResponsibleDepartment))
+                                {
+                                    <h6 class="text-primary mb-2">Responsible Department</h6>
+                                    <p class="mb-3">
+                                        <i class="fas fa-building me-2"></i>@Model.Category.ResponsibleDepartment
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-align-left me-2"></i>Issue Description
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="issue-description">
+                            @Html.Raw(Model.Description.Replace("\n", "<br>"))
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>Location Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary">Address</h6>
+                                <p class="mb-2">@Model.Location.Address</p>
+                                
+                                @if (!string.IsNullOrEmpty(Model.Location.Area))
+                                {
+                                    <h6 class="text-primary">Area/Suburb</h6>
+                                    <p class="mb-2">@Model.Location.Area</p>
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                @if (!string.IsNullOrEmpty(Model.Location.City))
+                                {
+                                    <h6 class="text-primary">City</h6>
+                                    <p class="mb-2">@Model.Location.City</p>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(Model.Location.PostalCode))
+                                {
+                                    <h6 class="text-primary">Postal Code</h6>
+                                    <p class="mb-2">@Model.Location.PostalCode</p>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <strong>Full Location:</strong> @Model.Location.ToString()
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attachments Card -->
+                @if (Model.Attachments.Count > 0)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-paperclip me-2"></i>Attachments (@Model.Attachments.Count)
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @{
+                                    var attachments = Model.Attachments.GetAll();
+                                    var images = Model.Attachments.GetImageFiles();
+                                    var documents = Model.Attachments.GetDocumentFiles();
+                                }
+                                
+                                @if (images.Length > 0)
+                                {
+                                    <div class="col-12 mb-4">
+                                        <h6 class="text-primary mb-3">
+                                            <i class="fas fa-images me-2"></i>Images (@images.Length)
+                                        </h6>
+                                        <div class="row">
+                                            @foreach (var image in images)
+                                            {
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="attachment-item">
+                                                        <div class="attachment-preview bg-light rounded p-3 text-center">
+                                                            <i class="fas fa-image fa-3x text-success mb-2"></i>
+                                                            <h6 class="mb-1">@image.FileName</h6>
+                                                            <small class="text-muted">@((image.FileSize / 1024.0 / 1024.0).ToString("F2")) MB</small>
+                                                            <div class="mt-2">
+                                                                @if (!string.IsNullOrEmpty(image.FilePath))
+                                                                {
+                                                                    <a href="@image.FilePath" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                                        <i class="fas fa-eye me-1"></i>View
+                                                                    </a>
+                                                                }
+                                                                <button class="btn btn-outline-secondary btn-sm" 
+                                                                        onclick="downloadFile('@image.FileName', '@image.FilePath')">
+                                                                    <i class="fas fa-download me-1"></i>Download
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                
+                                @if (documents.Length > 0)
+                                {
+                                    <div class="col-12">
+                                        <h6 class="text-primary mb-3">
+                                            <i class="fas fa-file-alt me-2"></i>Documents (@documents.Length)
+                                        </h6>
+                                        <div class="list-group">
+                                            @foreach (var document in documents)
+                                            {
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="@GetFileIcon(document.GetFileExtension()) fa-2x me-3"></i>
+                                                        <div>
+                                                            <h6 class="mb-1">@document.FileName</h6>
+                                                            <small class="text-muted">
+                                                                @((document.FileSize / 1024.0 / 1024.0).ToString("F2")) MB | 
+                                                                Uploaded: @document.UploadTime.ToString("dd MMM yyyy HH:mm")
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        @if (!string.IsNullOrEmpty(document.FilePath))
+                                                        {
+                                                            <a href="@document.FilePath" target="_blank" class="btn btn-outline-primary btn-sm me-2">
+                                                                <i class="fas fa-eye me-1"></i>View
+                                                            </a>
+                                                        }
+                                                        <button class="btn btn-outline-secondary btn-sm" 
+                                                                onclick="downloadFile('@document.FileName', '@document.FilePath')">
+                                                            <i class="fas fa-download me-1"></i>Download
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            
+                            <div class="mt-3 text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Total attachment size: @Model.Attachments.GetTotalSizeFormatted()
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Admin Notes (if any) -->
+                @if (!string.IsNullOrEmpty(Model.AdminNotes))
+                {
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-sticky-note me-2"></i>Administrative Notes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning mb-0">
+                                @Html.Raw(Model.AdminNotes.Replace("\n", "<br>"))
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Reporter Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Reporter Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="reporter-info">
+                            <div class="mb-3">
+                                <h6 class="text-primary">Name</h6>
+                                <p class="mb-0">@Model.ReporterName</p>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ReporterEmail))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="text-primary">Email</h6>
+                                    <p class="mb-0">
+                                        <a href="mailto:@Model.ReporterEmail">@Model.ReporterEmail</a>
+                                    </p>
+                                </div>
+                            }
+                            
+                            @if (!string.IsNullOrEmpty(Model.ReporterPhone))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="text-primary">Phone</h6>
+                                    <p class="mb-0">
+                                        <a href="tel:@Model.ReporterPhone">@Model.ReporterPhone</a>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tools me-2"></i>Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="copyReferenceNumber('@Model.IssueId.ToString("D6")')">
+                                <i class="fas fa-copy me-2"></i>Copy Reference Number
+                            </button>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ReporterEmail))
+                            {
+                                <a href="mailto:@Model.ReporterEmail?subject=Re: Issue #@Model.IssueId.ToString("D6")" class="btn btn-outline-info">
+                                    <i class="fas fa-envelope me-2"></i>Email Reporter
+                                </a>
+                            }
+                            
+                            <button class="btn btn-outline-success" onclick="printIssue()">
+                                <i class="fas fa-print me-2"></i>Print Details
+                            </button>
+                            
+                            <button class="btn btn-outline-warning" onclick="shareIssue()">
+                                <i class="fas fa-share me-2"></i>Share Issue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issue Statistics -->
+                <div class="card mb-4 bg-light">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-line me-2"></i>Issue Stats
+                        </h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="text-primary">@((DateTime.Now - Model.SubmittedAt).Days)</h4>
+                                <small class="text-muted">Days Since Submitted</small>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="text-success">@Model.Attachments.Count</h4>
+                                <small class="text-muted">Attachments</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Support -->
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-phone me-2"></i>Need Help?</h6>
+                    <p class="mb-2">For questions about this issue:</p>
+                    <strong>Phone:</strong> 0860 543 000<br>
+                    <strong>Email:</strong> support@municipality.gov.za<br>
+                    <small class="text-muted">Reference: #@Model.IssueId.ToString("D6")</small>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Error State -->
+        <div class="text-center py-5">
+            <i class="fas fa-exclamation-triangle fa-4x text-warning mb-4"></i>
+            <h3 class="text-muted mb-3">Issue Not Found</h3>
+            <p class="text-muted mb-4">The requested issue could not be found or may have been removed.</p>
+            <a href="@Url.Action("ViewIssues", "Issue")" class="btn btn-primary">
+                <i class="fas fa-list me-2"></i>View All Issues
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function copyReferenceNumber(refNumber) {
+            navigator.clipboard.writeText('#' + refNumber).then(function() {
+                showTooltip('Reference number copied to clipboard!');
+            });
+        }
+        
+        function downloadFile(fileName, filePath) {
+            if (filePath) {
+                var link = document.createElement('a');
+                link.href = filePath;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showTooltip('Download started: ' + fileName);
+            } else {
+                alert('File not available for download.');
+            }
+        }
+        
+        function printIssue() {
+            window.print();
+        }
+        
+        function shareIssue() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Municipal Issue #@Model?.IssueId.ToString("D6")',
+                    text: 'Check out this municipal issue report',
+                    url: window.location.href
+                });
+            } else {
+                copyReferenceNumber('@Model?.IssueId.ToString("D6")');
+                showTooltip('Issue link copied to clipboard!');
+            }
+        }
+        
+        function showTooltip(message) {
+            var tooltip = $('<div class="alert alert-success position-fixed" style="top: 20px; right: 20px; z-index: 9999;">' + message + '</div>');
+            $('body').append(tooltip);
+            setTimeout(function() {
+                tooltip.fadeOut(function() {
+                    tooltip.remove();
+                });
+            }, 3000);
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .issue-description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            padding: 10px 0;
+        }
+        
+        .attachment-item {
+            transition: transform 0.2s;
+        }
+        
+        .attachment-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .attachment-preview {
+            border: 2px dashed #dee2e6;
+            transition: border-color 0.2s;
+        }
+        
+        .attachment-preview:hover {
+            border-color: #007bff;
+        }
+        
+        .reporter-info h6 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .card {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        @@media print {
+            .btn, .alert-info, .card-header {
+                display: none !important;
+            }
+        }
+    </style>
+}
+
+@functions {
+    string GetStatusBadgeClass(MunicipalServicesMVP.Models.IssueStatusType status)
+    {
+        return status switch
+        {
+            MunicipalServicesMVP.Models.IssueStatusType.Submitted => "bg-warning text-dark",
+            MunicipalServicesMVP.Models.IssueStatusType.UnderReview => "bg-info",
+            MunicipalServicesMVP.Models.IssueStatusType.Resolved => "bg-success",
+            MunicipalServicesMVP.Models.IssueStatusType.Rejected => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+    
+    string GetPriorityBadgeClass(int priority)
+    {
+        return priority switch
+        {
+            1 => "bg-secondary",
+            2 => "bg-warning text-dark",
+            3 => "bg-danger",
+            _ => "bg-light text-dark"
+        };
+    }
+    
+    string GetFileIcon(string extension)
+    {
+        return extension switch
+        {
+            ".pdf" => "fas fa-file-pdf text-danger",
+            ".doc" or ".docx" => "fas fa-file-word text-primary",
+            ".txt" => "fas fa-file-alt text-secondary",
+            _ => "fas fa-file text-muted"
+        };
+    }
+}

@@ -1,0 +1,181 @@
+﻿@{
+    ViewData["Title"] = ViewBag.Title ?? "Municipal Services Portal";
+}
+
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary mb-3">
+            <i class="fas fa-city"></i> Municipal Services Portal
+        </h1>
+        <p class="lead text-muted">@ViewBag.WelcomeMessage</p>
+        <hr class="my-4">
+    </div>
+
+    <!-- Service Options Cards -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="row g-4">
+                
+                <!-- Report Issues Card (ENABLED) -->
+                <div class="col-md-4">
+                    <div class="card h-100 service-card @(ViewBag.ReportIssuesEnabled == true ? "enabled" : "disabled")">
+                        <div class="card-body text-center d-flex flex-column">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                            </div>
+                            <h4 class="card-title text-dark">Report Issues</h4>
+                            <p class="card-text flex-grow-1 text-muted">
+                                Report municipal service issues such as potholes, water leaks, 
+                                power outages, and other community concerns.
+                            </p>
+                            @if (ViewBag.ReportIssuesEnabled == true)
+                            {
+                                <a href="@Url.Action("ReportIssue", "Issue")" class="btn btn-primary btn-lg mt-auto">
+                                    <i class="fas fa-plus-circle me-2"></i>Report Issue
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary btn-lg mt-auto" disabled>
+                                    <i class="fas fa-lock me-2"></i>Coming Soon
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Events Card (DISABLED) -->
+                <div class="col-md-4">
+                    <div class="card h-100 service-card @(ViewBag.LocalEventsEnabled == true ? "enabled" : "disabled")">
+                        <div class="card-body text-center d-flex flex-column">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-calendar-alt fa-3x text-info"></i>
+                            </div>
+                            <h4 class="card-title text-dark">Local Events & Announcements</h4>
+                            <p class="card-text flex-grow-1 text-muted">
+                                Stay informed about local events, community meetings, 
+                                municipal announcements, and public notices.
+                            </p>
+                            @if (ViewBag.LocalEventsEnabled == true)
+                            {
+                                <a href="#" class="btn btn-info btn-lg mt-auto">
+                                    <i class="fas fa-calendar me-2"></i>View Events
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary btn-lg mt-auto" disabled>
+                                    <i class="fas fa-lock me-2"></i>Coming Soon
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Status Card (DISABLED) -->
+                <div class="col-md-4">
+                    <div class="card h-100 service-card @(ViewBag.ServiceStatusEnabled == true ? "enabled" : "disabled")">
+                        <div class="card-body text-center d-flex flex-column">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-search fa-3x text-success"></i>
+                            </div>
+                            <h4 class="card-title text-dark">Service Request Status</h4>
+                            <p class="card-text flex-grow-1 text-muted">
+                                Track the progress of your submitted service requests 
+                                and receive updates on resolution status.
+                            </p>
+                            @if (ViewBag.ServiceStatusEnabled == true)
+                            {
+                                <a href="#" class="btn btn-success btn-lg mt-auto">
+                                    <i class="fas fa-search me-2"></i>Check Status
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary btn-lg mt-auto" disabled>
+                                    <i class="fas fa-lock me-2"></i>Coming Soon
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-8">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        How It Works
+                    </h5>
+                    <p class="card-text">
+                        Our Municipal Services Portal makes it easy for residents to engage with local government. 
+                        Start by reporting issues in your community - together we can make our municipality better!
+                    </p>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <i class="fas fa-edit fa-2x text-primary mb-2"></i>
+                            <h6>1. Report</h6>
+                            <small class="text-muted">Submit your issue with details and photos</small>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-cogs fa-2x text-warning mb-2"></i>
+                            <h6>2. Process</h6>
+                            <small class="text-muted">We review and assign to the right department</small>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                            <h6>3. Resolve</h6>
+                            <small class="text-muted">Track progress and receive updates</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .service-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .service-card.enabled {
+            border-color: #007bff;
+        }
+        
+        .service-card.enabled:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,123,255,0.15);
+        }
+        
+        .service-card.disabled {
+            opacity: 0.6;
+            border-color: #6c757d;
+        }
+        
+        .service-icon {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-title {
+            font-weight: 600;
+        }
+        
+        .btn-lg {
+            padding: 12px 30px;
+            font-weight: 500;
+        }
+    </style>
+}
