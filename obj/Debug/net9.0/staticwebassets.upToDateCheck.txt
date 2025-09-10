@@ -62,9 +62,11 @@ wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
 wwwroot\uploads\1_2_c441c57a0e572348d2a448121908771f (1).jpg
+wwwroot\uploads\1_2_Offline First Mobile App Requirements.docx
 wwwroot\uploads\1_2_PROG7312POE - Copy.pdf
 wwwroot\uploads\2_2_c441c57a0e572348d2a448121908771f (1).jpg
 wwwroot\uploads\2_2_PROG7312POE - Copy.pdf
+wwwroot\uploads\3_2_c441c57a0e572348d2a448121908771f (1).jpg
 C:\Users\Kgosi Ramerafe\Desktop\Subjects\Year 3\Semester 2\PROG7312 (Dr Shozi)\Code\MunicipalServicesMVP\wwwroot\css\site.css
 C:\Users\Kgosi Ramerafe\Desktop\Subjects\Year 3\Semester 2\PROG7312 (Dr Shozi)\Code\MunicipalServicesMVP\wwwroot\favicon.ico
 C:\Users\Kgosi Ramerafe\Desktop\Subjects\Year 3\Semester 2\PROG7312 (Dr Shozi)\Code\MunicipalServicesMVP\wwwroot\js\site.js

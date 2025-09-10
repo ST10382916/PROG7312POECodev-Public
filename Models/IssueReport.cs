@@ -24,16 +24,6 @@ namespace MunicipalServicesMVP.Models
         
         public DateTime? LastUpdated { get; set; }
         
-        [Required]
-        [StringLength(100)]
-        public string ReporterName { get; set; } = string.Empty;
-        
-        [StringLength(100)]
-        [EmailAddress]
-        public string ReporterEmail { get; set; } = string.Empty;
-        
-        [StringLength(20)]
-        public string ReporterPhone { get; set; } = string.Empty;
         
         public IssueStatusType CurrentStatus { get; set; } = IssueStatusType.Submitted;
         

@@ -1,5 +1,40 @@
 namespace MunicipalServicesMVP.Models.DataStructures
 {
+
+    //CODE ATTRIBUTION:
+    //01
+    //C# LinkedList: Linked List Implementation In C#.
+    //Adapted from: GeeksforGeeks (2019). C# LinkedList. [online] GeeksforGeeks. 
+    //Available at: https://www.geeksforgeeks.org/c-sharp/linked-list-implementation-in-c-sharp/
+    //Date Accessed: 10 September 2025
+
+    //02
+    //LinkedList<T>. Remove Method.
+    //Adapted from: Microsoft Learn (2025). LinkedList<T>.Remove Method. [online] Microsoft Learn.
+    //Available at: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.linkedlist-1.remove?view=net-9.0
+    //Date Accessed: 10 September 2025
+
+    //03
+    //LinkedList<T>. Find(T) Method.
+    //Adapted from: Microsoft Learn (2025). LinkedList<T>.Find(T) Method. [online] Microsoft Learn.
+    //Available at: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.linkedlist-1.find?view=net-9.0
+    //Date Accessed: 10 September 2025
+
+    //04
+    //Generic classes and methods.
+    //Adapted from: Microsoft Learn (2025). Generic classes and methods. [online] Microsoft Learn.
+    //Available at: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.linkedlist-1.find?view=net-9.0
+    //Date Accessed: 10 September 2025
+
+    //05
+    //How To Create Generics in C#, Including New Features.
+    //Adapted from: IAmTimCorey (2024). How To Create Generics in C#, Including New Features. [online] YouTube.
+    //Available at: https://www.youtube.com/watch?v=Ld5D6B2Ntjg
+    //Date Accessed: 10 September 2025
+
+
+
+‌
     public class CategoryCollection<T>
     {
         private CategoryNode<T> head;
@@ -321,4 +356,6 @@ namespace MunicipalServicesMVP.Models.DataStructures
         }
     }
 }
+
+
 

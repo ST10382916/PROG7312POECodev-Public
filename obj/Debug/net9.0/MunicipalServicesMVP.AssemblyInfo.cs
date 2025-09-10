@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MunicipalServicesMVP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80b9405ffff728da2daf0cc51fc5925907bf4512")]
 [assembly: System.Reflection.AssemblyProductAttribute("MunicipalServicesMVP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MunicipalServicesMVP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

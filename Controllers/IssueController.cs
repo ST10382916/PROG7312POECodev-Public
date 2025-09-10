@@ -67,6 +67,7 @@ namespace MunicipalServicesMVP.Controllers
                 // Set submission timestamp
                 issue.SubmittedAt = DateTime.Now;
                 issue.CurrentStatus = IssueStatusType.Submitted;
+                
 
                 // Handle file attachments
                 if (attachments != null && attachments.Count > 0)
@@ -294,16 +295,7 @@ namespace MunicipalServicesMVP.Controllers
                 var totalIssues = _issueCollection.Count;
                 var progressPercentage = Math.Min(100, (totalIssues * 10)); // Simple engagement calculation
                 
-                var encouragingMessages = new[]
-                {
-                    "Thank you for helping improve our community!",
-                    "Your participation makes a difference!",
-                    "Together we can build a better municipality!",
-                    "Every report helps us serve you better!",
-                    "Your civic engagement is appreciated!"
-                };
-
-                var randomMessage = encouragingMessages[new Random().Next(encouragingMessages.Length)];
+                var randomMessage = "Your support is appreciated!";
 
                 return Json(new 
                 { 
@@ -320,4 +312,6 @@ namespace MunicipalServicesMVP.Controllers
         }
     }
 }
+
+
 

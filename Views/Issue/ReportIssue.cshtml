@@ -10,11 +10,11 @@
         <div class="col-12">
             <div class="d-flex align-items-center mb-3">
                 <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary me-3">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Main Menu
+                    Back to Main Menu
                 </a>
                 <div>
                     <h2 class="text-primary mb-1">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Report an Issue
+                        Report an Issue
                     </h2>
                     <p class="text-muted mb-0">@ViewBag.Instructions</p>
                 </div>
@@ -23,7 +23,7 @@
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
             {
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>@ViewBag.ErrorMessage
+                    @ViewBag.ErrorMessage
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
@@ -42,14 +42,14 @@
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-map-marker-alt me-2"></i>Location Information
+                            Location Information
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label asp-for="Location.Address" class="form-label">
-                                    <i class="fas fa-road me-1"></i>Street Address *
+                                    Street Address *
                                 </label>
                                 <input asp-for="Location.Address" class="form-control" 
                                        placeholder="e.g., 123 Main Street, Corner of Smith & Jones Road" 
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label asp-for="Location.Area" class="form-label">
-                                    <i class="fas fa-home me-1"></i>Suburb/Area
+                                    Suburb/Area
                                 </label>
                                 <input asp-for="Location.Area" class="form-control" 
                                        placeholder="e.g., Sandton, Rosebank" />
@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label asp-for="Location.City" class="form-label">
-                                    <i class="fas fa-city me-1"></i>City
+                                    City
                                 </label>
                                 <input asp-for="Location.City" class="form-control" 
                                        placeholder="e.g., Johannesburg, Cape Town" />
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label asp-for="Location.PostalCode" class="form-label">
-                                    <i class="fas fa-mail-bulk me-1"></i>Postal Code
+                                    Postal Code
                                 </label>
                                 <input asp-for="Location.PostalCode" class="form-control" 
                                        placeholder="e.g., 2196, 8001" />
@@ -88,14 +88,14 @@
                 <div class="card mb-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0">
-                            <i class="fas fa-info-circle me-2"></i>Issue Details
+                            Issue Details
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="CategoryId" class="form-label">
-                                    <i class="fas fa-tags me-1"></i>Issue Category *
+                                    Issue Category *
                                 </label>
                                 <select asp-for="CategoryId" class="form-select" required>
                                     <option value="">-- Select Category --</option>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Priority" class="form-label">
-                                    <i class="fas fa-flag me-1"></i>Priority Level
+                                    Priority Level
                                 </label>
                                 <select asp-for="Priority" class="form-select">
                                     <option value="1">Low - Can wait for regular maintenance</option>
@@ -120,77 +120,32 @@
                         
                         <div class="mb-3">
                             <label asp-for="Description" class="form-label">
-                                <i class="fas fa-edit me-1"></i>Description *
+                                Description *
                             </label>
                             <textarea asp-for="Description" class="form-control" rows="5" 
                                       placeholder="Please provide a detailed description of the issue. Include what you observed, when it occurred, and any relevant details that might help us resolve it quickly."
                                       required></textarea>
-                            <div class="form-text">
-                                <i class="fas fa-lightbulb me-1"></i>
-                                Tip: Be specific! Include details like size, severity, and how long the issue has existed.
-                            </div>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Information Section -->
-                <div class="card mb-4">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-user me-2"></i>Your Contact Information
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="ReporterName" class="form-label">
-                                    <i class="fas fa-user me-1"></i>Full Name *
-                                </label>
-                                <input asp-for="ReporterName" class="form-control" 
-                                       placeholder="Your full name" required />
-                                <span asp-validation-for="ReporterName" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="ReporterEmail" class="form-label">
-                                    <i class="fas fa-envelope me-1"></i>Email Address
-                                </label>
-                                <input asp-for="ReporterEmail" type="email" class="form-control" 
-                                       placeholder="your.email@example.com" />
-                                <span asp-validation-for="ReporterEmail" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label asp-for="ReporterPhone" class="form-label">
-                                    <i class="fas fa-phone me-1"></i>Phone Number
-                                </label>
-                                <input asp-for="ReporterPhone" type="tel" class="form-control" 
-                                       placeholder="083 123 4567" />
-                                <span asp-validation-for="ReporterPhone" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="alert alert-light">
-                            <i class="fas fa-shield-alt me-2"></i>
-                            <strong>Privacy Note:</strong> Your contact information will only be used to provide updates on this issue and will not be shared with third parties.
-                        </div>
-                    </div>
-                </div>
 
                 <!-- File Attachments Section -->
                 <div class="card mb-4">
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-paperclip me-2"></i>Attachments (Optional)
+                            Attachments (Optional)
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="attachments" class="form-label">
-                                <i class="fas fa-upload me-1"></i>Upload Photos or Documents
+                                Upload Photos or Documents
                             </label>
                             <input type="file" name="attachments" id="attachments" class="form-control" 
                                    multiple accept="image/*,.pdf,.doc,.docx,.txt" />
                             <div class="form-text">
-                                <i class="fas fa-info-circle me-1"></i>
                                 Supported formats: Images (JPG, PNG, GIF), Documents (PDF, DOC, DOCX, TXT). Max 5MB per file.
                             </div>
                         </div>
@@ -209,23 +164,22 @@
 
             <!-- Sidebar -->
             <div class="col-lg-4">
-                <!-- Engagement Feature -->
+                <!-- Progress Bar -->
                 <div class="card mb-4 bg-light">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-heart me-2"></i>Community Engagement
+                            Progress Bar
                         </h5>
                     </div>
                     <div class="card-body text-center">
                         <div id="engagementMessage" class="mb-3">
-                            <p class="text-muted">Loading engagement stats...</p>
+                            <p class="text-muted">Start filling out the form!</p>
                         </div>
                         <div class="progress mb-3">
                             <div id="engagementProgress" class="progress-bar bg-success" role="progressbar" 
                                  style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
-                        <small class="text-muted">Community participation level</small>
                     </div>
                 </div>
 
@@ -233,38 +187,24 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="fas fa-lightbulb me-2"></i>Quick Tips
+                            Quick Tips
                         </h5>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
                             <li class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Be as specific as possible with your location
+                                1. Be as specific as possible with your location
                             </li>
                             <li class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Include photos if available
+                                2. Include photos if available
                             </li>
                             <li class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Describe the impact on the community
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-check text-success me-2"></i>
-                                Provide your contact details for updates
+                                3. Describe the impact on the community
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Emergency Notice -->
-                <div class="alert alert-warning">
-                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Emergency?</h6>
-                    <p class="mb-2">For urgent emergencies, please call:</p>
-                    <strong>Emergency Services: 10111</strong><br>
-                    <strong>Municipal Emergency: 0860 543 000</strong>
-                </div>
             </div>
         </div>
 
@@ -274,18 +214,12 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <button type="submit" class="btn btn-primary btn-lg me-3" id="submitBtn">
-                            <i class="fas fa-paper-plane me-2"></i>Submit Report
+                            Submit Report
                         </button>
                         <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-times me-2"></i>Cancel
+                            Cancel
                         </a>
                         
-                        <div class="mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-clock me-1"></i>
-                                You will receive a reference number after submission for tracking your request.
-                            </small>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -302,6 +236,12 @@
             // File upload preview
             $('#attachments').on('change', function() {
                 previewFiles(this.files);
+                updateProgressBar();
+            });
+            
+            // Update progress bar when form fields change
+            $('#reportForm input, #reportForm select, #reportForm textarea').on('input change', function() {
+                updateProgressBar();
             });
             
             // Form validation enhancement
@@ -320,8 +260,11 @@
                 }
                 
                 // Show loading state
-                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Submitting...');
+                $('#submitBtn').prop('disabled', true).html('Submitting...');
             });
+            
+            // Initial progress bar update
+            updateProgressBar();
         });
         
         function loadEngagementStats() {
@@ -332,8 +275,7 @@
                     } else {
                         $('#engagementMessage').html('<p class="text-primary"><strong>' + data.message + '</strong></p>');
                         $('#engagementProgress').css('width', data.progressPercentage + '%')
-                                              .attr('aria-valuenow', data.progressPercentage)
-                                              .text(data.totalReports + ' reports submitted');
+                                              .attr('aria-valuenow', data.progressPercentage);
                     }
                 })
                 .fail(function() {
@@ -354,7 +296,6 @@
                     var fileIcon = getFileIcon(file.type);
                     
                     var fileItem = $('<div class="alert alert-light d-flex align-items-center mb-2">' +
-                                   '<i class="' + fileIcon + ' me-2"></i>' +
                                    '<div class="flex-grow-1">' +
                                    '<strong>' + file.name + '</strong><br>' +
                                    '<small class="text-muted">' + fileSize + ' MB</small>' +
@@ -373,6 +314,74 @@
             if (fileType.includes('pdf')) return 'fas fa-file-pdf text-danger';
             if (fileType.includes('doc')) return 'fas fa-file-word text-primary';
             return 'fas fa-file text-secondary';
+        }
+        
+        function updateProgressBar() {
+            var totalFields = 0;
+            var filledFields = 0;
+            
+            // Required fields
+            var requiredFields = [
+                '#Location_Address',
+                '#CategoryId', 
+                '#Description'
+            ];
+            
+            // Optional fields
+            var optionalFields = [
+                '#Location_Area',
+                '#Location_City',
+                '#Location_PostalCode',
+                '#Priority'
+            ];
+            
+            // Check required fields (weight them more heavily)
+            requiredFields.forEach(function(fieldId) {
+                totalFields += 2; // Required fields count double
+                var value = $(fieldId).val();
+                if (value && value.trim() !== '') {
+                    filledFields += 2;
+                }
+            });
+            
+            // Check optional fields
+            optionalFields.forEach(function(fieldId) {
+                totalFields += 1;
+                var value = $(fieldId).val();
+                if (value && value.trim() !== '') {
+                    filledFields += 1;
+                }
+            });
+            
+            // Check if files are attached (bonus points)
+            var attachments = $('#attachments')[0];
+            if (attachments && attachments.files.length > 0) {
+                filledFields += 1;
+            }
+            totalFields += 1;
+            
+            // Calculate percentage
+            var percentage = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
+            
+            // Update progress bar
+            $('#engagementProgress').css('width', percentage + '%')
+                                  .attr('aria-valuenow', percentage);
+            
+            // Update message based on progress
+            var message = '';
+            if (percentage === 0) {
+                message = 'Start filling out the form!';
+            } else if (percentage < 50) {
+                message = 'Getting started... (' + percentage + '% complete)';
+            } else if (percentage < 80) {
+                message = 'Making good progress! (' + percentage + '% complete)';
+            } else if (percentage < 100) {
+                message = 'Almost done! (' + percentage + '% complete)';
+            } else {
+                message = 'Form complete! Ready to submit (' + percentage + '% complete)';
+            }
+            
+            $('#engagementMessage').html('<p class="text-primary"><strong>' + message + '</strong></p>');
         }
     </script>
 }

@@ -12,16 +12,16 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
                         <h2 class="text-primary mb-1">
-                            <i class="fas fa-file-alt me-2"></i>Issue Details
+                            Issue Details
                         </h2>
                         <p class="text-muted mb-0">Reference: <strong>#@Model.IssueId.ToString("D6")</strong></p>
                     </div>
                     <div>
                         <a href="@Url.Action("ViewIssues", "Issue")" class="btn btn-outline-secondary me-2">
-                            <i class="fas fa-list me-2"></i>All Issues
+                            All Issues
                         </a>
                         <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
-                            <i class="fas fa-home me-2"></i>Main Menu
+                            Main Menu
                         </a>
                     </div>
                 </div>
@@ -30,12 +30,12 @@
 
         <div class="row">
             <!-- Main Details Column -->
-            <div class="col-lg-8">
+            <div class="col-12">
                 <!-- Status and Priority Card -->
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">
-                            <i class="fas fa-info-circle me-2"></i>Issue Status
+                            Issue Status
                         </h5>
                         <div>
                             <span class="badge @GetStatusBadgeClass(Model.CurrentStatus) me-2 fs-6">
@@ -51,7 +51,7 @@
                             <div class="col-md-6">
                                 <h6 class="text-primary mb-2">Category</h6>
                                 <p class="mb-3">
-                                    <i class="fas fa-tag me-2"></i>@(Model.Category?.Name ?? "Unknown Category")
+                                    @(Model.Category?.Name ?? "Unknown Category")
                                     @if (!string.IsNullOrEmpty(Model.Category?.Description))
                                     {
                                         <br><small class="text-muted">@Model.Category.Description</small>
@@ -60,7 +60,7 @@
                                 
                                 <h6 class="text-primary mb-2">Submitted</h6>
                                 <p class="mb-3">
-                                    <i class="fas fa-calendar me-2"></i>@Model.SubmittedAt.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
+                                    @Model.SubmittedAt.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
                                 </p>
                             </div>
                             <div class="col-md-6">
@@ -68,7 +68,7 @@
                                 {
                                     <h6 class="text-primary mb-2">Last Updated</h6>
                                     <p class="mb-3">
-                                        <i class="fas fa-edit me-2"></i>@Model.LastUpdated.Value.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
+                                        @Model.LastUpdated.Value.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
                                     </p>
                                 }
                                 
@@ -76,7 +76,7 @@
                                 {
                                     <h6 class="text-primary mb-2">Responsible Department</h6>
                                     <p class="mb-3">
-                                        <i class="fas fa-building me-2"></i>@Model.Category.ResponsibleDepartment
+                                        @Model.Category.ResponsibleDepartment
                                     </p>
                                 }
                             </div>
@@ -88,7 +88,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="fas fa-align-left me-2"></i>Issue Description
+                            Issue Description
                         </h5>
                     </div>
                     <div class="card-body">
@@ -102,7 +102,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="fas fa-map-marker-alt me-2"></i>Location Details
+                            Location Details
                         </h5>
                     </div>
                     <div class="card-body">
@@ -144,7 +144,7 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5 class="mb-0">
-                                <i class="fas fa-paperclip me-2"></i>Attachments (@Model.Attachments.Count)
+                                Attachments (@Model.Attachments.Count)
                             </h5>
                         </div>
                         <div class="card-body">
@@ -159,7 +159,7 @@
                                 {
                                     <div class="col-12 mb-4">
                                         <h6 class="text-primary mb-3">
-                                            <i class="fas fa-images me-2"></i>Images (@images.Length)
+                                            Images (@images.Length)
                                         </h6>
                                         <div class="row">
                                             @foreach (var image in images)
@@ -167,19 +167,18 @@
                                                 <div class="col-md-4 mb-3">
                                                     <div class="attachment-item">
                                                         <div class="attachment-preview bg-light rounded p-3 text-center">
-                                                            <i class="fas fa-image fa-3x text-success mb-2"></i>
                                                             <h6 class="mb-1">@image.FileName</h6>
                                                             <small class="text-muted">@((image.FileSize / 1024.0 / 1024.0).ToString("F2")) MB</small>
                                                             <div class="mt-2">
                                                                 @if (!string.IsNullOrEmpty(image.FilePath))
                                                                 {
                                                                     <a href="@image.FilePath" target="_blank" class="btn btn-outline-primary btn-sm">
-                                                                        <i class="fas fa-eye me-1"></i>View
+                                                                        View
                                                                     </a>
                                                                 }
                                                                 <button class="btn btn-outline-secondary btn-sm" 
                                                                         onclick="downloadFile('@image.FileName', '@image.FilePath')">
-                                                                    <i class="fas fa-download me-1"></i>Download
+                                                                    Download
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -194,7 +193,7 @@
                                 {
                                     <div class="col-12">
                                         <h6 class="text-primary mb-3">
-                                            <i class="fas fa-file-alt me-2"></i>Documents (@documents.Length)
+                                            Documents (@documents.Length)
                                         </h6>
                                         <div class="list-group">
                                             @foreach (var document in documents)
@@ -214,12 +213,12 @@
                                                         @if (!string.IsNullOrEmpty(document.FilePath))
                                                         {
                                                             <a href="@document.FilePath" target="_blank" class="btn btn-outline-primary btn-sm me-2">
-                                                                <i class="fas fa-eye me-1"></i>View
+                                                                View
                                                             </a>
                                                         }
                                                         <button class="btn btn-outline-secondary btn-sm" 
                                                                 onclick="downloadFile('@document.FileName', '@document.FilePath')">
-                                                            <i class="fas fa-download me-1"></i>Download
+                                                            Download
                                                         </button>
                                                     </div>
                                                 </div>
@@ -230,7 +229,6 @@
                             </div>
                             
                             <div class="mt-3 text-muted">
-                                <i class="fas fa-info-circle me-1"></i>
                                 Total attachment size: @Model.Attachments.GetTotalSizeFormatted()
                             </div>
                         </div>
@@ -243,7 +241,7 @@
                     <div class="card mb-4">
                         <div class="card-header bg-warning text-dark">
                             <h5 class="mb-0">
-                                <i class="fas fa-sticky-note me-2"></i>Administrative Notes
+                                Administrative Notes
                             </h5>
                         </div>
                         <div class="card-body">
@@ -255,115 +253,16 @@
                 }
             </div>
 
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <!-- Reporter Information -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-user me-2"></i>Reporter Information
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="reporter-info">
-                            <div class="mb-3">
-                                <h6 class="text-primary">Name</h6>
-                                <p class="mb-0">@Model.ReporterName</p>
-                            </div>
-                            
-                            @if (!string.IsNullOrEmpty(Model.ReporterEmail))
-                            {
-                                <div class="mb-3">
-                                    <h6 class="text-primary">Email</h6>
-                                    <p class="mb-0">
-                                        <a href="mailto:@Model.ReporterEmail">@Model.ReporterEmail</a>
-                                    </p>
-                                </div>
-                            }
-                            
-                            @if (!string.IsNullOrEmpty(Model.ReporterPhone))
-                            {
-                                <div class="mb-3">
-                                    <h6 class="text-primary">Phone</h6>
-                                    <p class="mb-0">
-                                        <a href="tel:@Model.ReporterPhone">@Model.ReporterPhone</a>
-                                    </p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-tools me-2"></i>Quick Actions
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-primary" onclick="copyReferenceNumber('@Model.IssueId.ToString("D6")')">
-                                <i class="fas fa-copy me-2"></i>Copy Reference Number
-                            </button>
-                            
-                            @if (!string.IsNullOrEmpty(Model.ReporterEmail))
-                            {
-                                <a href="mailto:@Model.ReporterEmail?subject=Re: Issue #@Model.IssueId.ToString("D6")" class="btn btn-outline-info">
-                                    <i class="fas fa-envelope me-2"></i>Email Reporter
-                                </a>
-                            }
-                            
-                            <button class="btn btn-outline-success" onclick="printIssue()">
-                                <i class="fas fa-print me-2"></i>Print Details
-                            </button>
-                            
-                            <button class="btn btn-outline-warning" onclick="shareIssue()">
-                                <i class="fas fa-share me-2"></i>Share Issue
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Issue Statistics -->
-                <div class="card mb-4 bg-light">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">
-                            <i class="fas fa-chart-line me-2"></i>Issue Stats
-                        </h5>
-                        <div class="row">
-                            <div class="col-6">
-                                <h4 class="text-primary">@((DateTime.Now - Model.SubmittedAt).Days)</h4>
-                                <small class="text-muted">Days Since Submitted</small>
-                            </div>
-                            <div class="col-6">
-                                <h4 class="text-success">@Model.Attachments.Count</h4>
-                                <small class="text-muted">Attachments</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Support -->
-                <div class="alert alert-info">
-                    <h6><i class="fas fa-phone me-2"></i>Need Help?</h6>
-                    <p class="mb-2">For questions about this issue:</p>
-                    <strong>Phone:</strong> 0860 543 000<br>
-                    <strong>Email:</strong> support@municipality.gov.za<br>
-                    <small class="text-muted">Reference: #@Model.IssueId.ToString("D6")</small>
-                </div>
-            </div>
         </div>
     }
     else
     {
         <!-- Error State -->
         <div class="text-center py-5">
-            <i class="fas fa-exclamation-triangle fa-4x text-warning mb-4"></i>
             <h3 class="text-muted mb-3">Issue Not Found</h3>
             <p class="text-muted mb-4">The requested issue could not be found or may have been removed.</p>
             <a href="@Url.Action("ViewIssues", "Issue")" class="btn btn-primary">
-                <i class="fas fa-list me-2"></i>View All Issues
+                View All Issues
             </a>
         </div>
     }
@@ -371,11 +270,6 @@
 
 @section Scripts {
     <script>
-        function copyReferenceNumber(refNumber) {
-            navigator.clipboard.writeText('#' + refNumber).then(function() {
-                showTooltip('Reference number copied to clipboard!');
-            });
-        }
         
         function downloadFile(fileName, filePath) {
             if (filePath) {
@@ -391,32 +285,8 @@
             }
         }
         
-        function printIssue() {
-            window.print();
-        }
         
-        function shareIssue() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Municipal Issue #@Model?.IssueId.ToString("D6")',
-                    text: 'Check out this municipal issue report',
-                    url: window.location.href
-                });
-            } else {
-                copyReferenceNumber('@Model?.IssueId.ToString("D6")');
-                showTooltip('Issue link copied to clipboard!');
-            }
-        }
         
-        function showTooltip(message) {
-            var tooltip = $('<div class="alert alert-success position-fixed" style="top: 20px; right: 20px; z-index: 9999;">' + message + '</div>');
-            $('body').append(tooltip);
-            setTimeout(function() {
-                tooltip.fadeOut(function() {
-                    tooltip.remove();
-                });
-            }, 3000);
-        }
     </script>
 }
 
@@ -445,10 +315,6 @@
             border-color: #007bff;
         }
         
-        .reporter-info h6 {
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
         
         .card {
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
